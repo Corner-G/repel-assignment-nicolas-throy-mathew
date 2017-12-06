@@ -1,0 +1,58 @@
+nonplayer_pos = PVector(300, 300)
+sprite_size = 40
+radius_nonplayer = sprite_size/2
+radius_repel = radius_nonplayer*3
+speed = PVector(0, 0)
+
+
+
+def setup():
+    size(600, 600)
+    
+def draw():
+    player_pos = PVector(mouseX, mouseY)
+    global nonplayer_pos
+    global sprite_size
+    global radius_repel
+    global radius_nonplayer
+    background(255)
+    
+    #Non Player Sprite
+    fill(0)
+    ellipse(nonplayer_pos.x, nonplayer_pos.y, sprite_size, sprite_size)
+    
+    #Player Sprite
+    fill(0, 0, 255)
+    ellipse(player_pos.x, player_pos.y, sprite_size, sprite_size)
+    
+    distance_vect = PVector.sub(player_pos, nonplayer_pos)
+    angle = distance_vect.heading()
+    distance = distance_vect.mag()
+    repel_direction = PVector.fromAngle(angle)
+    distancein = radius_repel + radius_nonplayer - distance
+    print(distancein)
+    
+    global speed
+        
+    if distance <= radius_repel:
+        repel_direction.mult(-1)
+        speed.add(repel_direction)
+        
+    nonplayer_pos.add(speed)
+        
+    if nonplayer_pos.x >= width:
+        nonplayer_pos.x = width
+        speed.x *= -0.5
+        
+    elif nonplayer_pos.x <= 0:
+        nonplayer_pos.x = 0
+        speed.x *= -0.5
+        
+    elif nonplayer_pos.y >= height:
+        nonplayer_pos.y = height
+        speed.y *= -0.5
+        
+    elif nonplayer_pos.y <= 0:
+        nonplayer_pos.y = 0
+        speed.y *= -0.5
+        
